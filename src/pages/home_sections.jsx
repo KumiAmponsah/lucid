@@ -192,12 +192,14 @@ const Section1 = () => {
       </div>
 
       {/* Feature Section Header */}
-      <div className="items-center text-center my-8 px-2 py-6 bg-white">
+      <div className="items-center text-center my-4 px-2 py-6 bg-white">
+        <div className="my-2 px-2 py-2 bg-white">
         <h1 className="text-black font-semibold text-3xl">Platform Features</h1>
         <p className="text-gray-600 mt-2 max-w-2xl mx-auto">
           Discover what makes our platform the best choice for connecting with
           trusted workers
         </p>
+        </div>
       </div>
 
       {/* Feature Cards - Bottom Grid */}
@@ -285,7 +287,7 @@ const Section1 = () => {
         </p>
       </div>
 
-      <div className="max-w-[1240px] mx-auto grid md:grid-cols-2 gap-x-24 gap-y-8 px-6 mb-6 pb-8">
+      <div className="max-w-[1240px] mx-auto grid md:grid-cols-4 gap-x-24 gap-y-8 px-6 mb-6 pb-8">
         <div className="flex flex-col items-center justify-center text-center">
             {/*step 1*/}
          <div className="w-auto h-44 mt-2 bg-blue-700 rounded-2xl overflow-hidden flex items-center justify-center">
@@ -371,6 +373,55 @@ const Section1 = () => {
 
       {/*slider section*/}
         <Carousel slides={slides} />
+
+        
+        {/* FAQ*/}
+        <div className="flex flex-col min-h-screen bg-white">
+          <div className="items-center text-center my-8 px-2 py-6 bg-white">
+            <div className="my-4 px-2 py-6 bg-white">
+              <h1 className="text-black font-semibold text-3xl">Platform Features</h1>
+              <p className="text-gray-600 mt-2 max-w-2xl mx-auto">
+                Discover what makes our platform the best choice for connecting with
+                trusted workers
+              </p>
+            </div>
+            {/*Questions*/}
+            <div className='items-center text-center m-8  px-2 py-6'>
+              <div tabIndex={0} className="collapse collapse-arrow bg-white border-y-2 rounded-none border-gray-100">
+                <div className="collapse-title font-semibold text-black text-left">How quickly can I get help through your neighbourhood services platform?</div>
+                  <div className="collapse-content text-sm text-gray-600 text-left">
+                    Most tasks receive responses within 15 minutes, and many workers offer same-day availability for urgent needs.
+                  </div>
+                </div>
+                
+              <div tabIndex={1} className="collapse collapse-arrow bg-white border-b-2 rounded-none border-gray-100">
+                <div className="collapse-title font-semibold text-black text-left">How quickly can I get help through your neighborhood services platform?</div>
+                  <div className="collapse-content text-sm text-gray-600 text-left">
+                    Most tasks receive responses within 15 minutes, and many workers offer same-day availability for urgent needs.
+                  </div>
+                </div>
+              <div tabIndex={2} className="collapse collapse-arrow bg-white border-b-2 rounded-none border-gray-100">
+                <div className="collapse-title font-semibold text-black text-left">How quickly can I get help through your neighborhood services platform?</div>
+                  <div className="collapse-content text-sm text-gray-600 text-left">
+                    Most tasks receive responses within 15 minutes, and many workers offer same-day availability for urgent needs.
+                  </div>
+                </div>
+              <div tabIndex={3} className="collapse collapse-arrow bg-white border-b-2 rounded-none border-gray-100">
+                <div className="collapse-title font-semibold text-black text-left">How quickly can I get help through your neighborhood services platform?</div>
+                  <div className="collapse-content text-sm text-gray-600 text-left">
+                    Most tasks receive responses within 15 minutes, and many workers offer same-day availability for urgent needs.
+                  </div>
+                </div>
+              <div tabIndex={4} className="collapse collapse-arrow bg-white border-b-2 rounded-none border-gray-100">
+                <div className="collapse-title font-semibold text-black text-left">How quickly can I get help through your neighborhood services platform?</div>
+                  <div className="collapse-content text-sm text-gray-600 text-left">
+                    Most tasks receive responses within 15 minutes, and many workers offer same-day availability for urgent needs.
+                  </div>
+                </div>
+            </div>
+            
+            </div>
+        </div>
     </div>
   );
 };
