@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Logo from "../assets/Lucid.png";
 
 function Navbar() {
@@ -8,18 +9,22 @@ function Navbar() {
     setIsOpen(!isOpen);
   };
 
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
       <div className="navbar bg-white">
         {/* Left section */}
         <div className="navbar-start">
-          <a href="/" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img
               src={Logo}
               alt="Lucid Logo"
               className="h-14 w-auto object-contain"
             />
-          </a>
+          </Link>
         </div>
 
         {/* Right section */}
@@ -69,15 +74,18 @@ function Navbar() {
             >
               Join as a worker
             </a>
-            <a
+            
+            <Link
+              to="/services"
               role="tab"
               className="tab px-4 py-2 text-black border-b-2 border-transparent hover:border-orange-600 transition-colors cursor-pointer"
             >
               Services
-            </a>
+            </Link>
+            
             <a
               role="tab"
-              className="tab tab-active px-4 py-2 text-black border-b-2 border-transparent hover:border-orange-600 transition-colors cursor-pointer"
+              className="tab px-4 py-2 text-black border-b-2 border-transparent hover:border-orange-600 transition-colors cursor-pointer"
             >
               About
             </a>
@@ -137,11 +145,13 @@ function Navbar() {
         <div className="p-6 h-full flex flex-col">
           {/* Logo/Brand */}
           <div className="mb-8">
-            <img
-              src={Logo}
-              alt="Lucid Logo"
-              className="h-10 w-10 object-cover"
-            />
+            <Link to="/" onClick={closeMenu}>
+              <img
+                src={Logo}
+                alt="Lucid Logo"
+                className="h-10 w-10 object-cover"
+              />
+            </Link>
           </div>
 
           {/* Menu Items */}
@@ -149,6 +159,7 @@ function Navbar() {
             <a
               href="#"
               className="flex items-center space-x-3 text-black hover:text-orange-600 hover:bg-orange-50 p-3 rounded-lg transition-colors"
+              onClick={closeMenu}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -161,9 +172,10 @@ function Navbar() {
               <span className="font-medium">Area</span>
             </a>
 
-            <a
-              href="#"
+            <Link
+              to="/services"
               className="flex items-center space-x-3 text-black hover:text-orange-600 hover:bg-orange-50 p-3 rounded-lg transition-colors"
+              onClick={closeMenu}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -174,11 +186,12 @@ function Navbar() {
                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M9 17H7v-7h2zm4 0h-2V7h2zm4 0h-2v-4h2z" />
               </svg>
               <span className="font-medium">Services</span>
-            </a>
+            </Link>
 
             <a
               href="#"
               className="flex items-center space-x-3 text-black hover:text-orange-600 hover:bg-orange-50 p-3 rounded-lg transition-colors"
+              onClick={closeMenu}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -194,6 +207,7 @@ function Navbar() {
             <a
               href="#"
               className="flex items-center space-x-3 text-black hover:text-orange-600 hover:bg-orange-50 p-3 rounded-lg transition-colors"
+              onClick={closeMenu}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -209,6 +223,7 @@ function Navbar() {
             <a
               href="#"
               className="flex items-center space-x-3 text-black hover:text-orange-600 hover:bg-orange-50 p-3 rounded-lg transition-colors"
+              onClick={closeMenu}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
