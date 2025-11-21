@@ -1,28 +1,7 @@
 import React from 'react';
 import image1 from '../assets/dummy0.jpg';
 import Carousel from '../components/carousal_slider.jsx';
-const slides = [
-  {
-    id: 1,
-    title: "For Businesses",
-    subtitle: "Streamline Your Staffing Efficiency",
-    description:
-      "Whether you have short-term projects or seasonal demands, our automated on-demand staffing platform enables you to effortlessly find workers within minutes.",
-    image:
-      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-    buttonText: "Find Workers",
-  },
-  {
-    id: 2,
-    title: "For Individuals",
-    subtitle: "Get Hired Quickly and Securely",
-    description:
-      "Join our network of verified workers and start getting matched with available jobs near you in just a few clicks.",
-    image:
-      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
-    buttonText: "Join Now",
-  },
-];
+
 
 const Section1 = () => {
   return (
@@ -372,7 +351,7 @@ const Section1 = () => {
       </div>
 
       {/*slider section*/}
-        <Carousel slides={slides} />
+        <Carousel/>
 
         
         {/* FAQ*/}

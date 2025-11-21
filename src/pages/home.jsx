@@ -1,16 +1,12 @@
-import Navbar from "../components/navbar";
+import Section1 from "./home_sections.jsx";
 import BackgroundImage from "../assets/background.png"
 
 function Home() {
   return (
     <>
     <div className="flex flex-col min-h-screen bg-gray-300">
-      {/* Navbar */}
-      <Navbar />
-
-      {/* Hero fills the remaining height */}
       <div
-        className="hero flex-1 w-full mt-1.5"
+        className="hero flex-1 w-full"
         style={{
           backgroundImage:
            `url(${BackgroundImage})`,
@@ -88,7 +84,7 @@ function Home() {
       </div>
       {/* Category Buttons end */}
     </div>
-    
+    <Section1/>
     </>
   );
 }
