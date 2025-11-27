@@ -266,7 +266,7 @@ const Section1 = () => {
         </p>
       </div>
 
-      <div className="max-w-[1240px] mx-auto grid md:grid-cols-4 gap-x-24 gap-y-8 px-6 mb-6 pb-8">
+      <div className="max-w-[1240px] mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-x-24 gap-y-8 px-6 mb-6 pb-8">
         <div className="flex flex-col items-center justify-center text-center">
             {/*step 1*/}
          <div className="w-auto h-44 mt-2 bg-blue-700 rounded-2xl overflow-hidden flex items-center justify-center">

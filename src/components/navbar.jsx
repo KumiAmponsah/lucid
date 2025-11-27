@@ -69,7 +69,7 @@ function Navbar() {
               </ul>
             </div>
 
-            <Link to="/"
+            <Link to="/signup"
               role="tab"
               className="tab px-4 py-2 text-black border-b-2 border-transparent hover:border-orange-600 transition-colors cursor-pointer"
             >
@@ -201,7 +201,22 @@ function Navbar() {
           ))}
         </ul>
               </div>
-            {/*Dropdown menu*/}
+            {/*Dropdown menu ends*/}
+            <Link
+              to="/signup" 
+              onClick={handleLinkClick}
+              className="flex items-center space-x-3 text-black hover:text-orange-600 hover:bg-orange-50 p-3 rounded-lg transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M9 17H7v-7h2zm4 0h-2V7h2zm4 0h-2v-4h2z" />
+              </svg>
+              <span className="font-medium">Join as a worker</span>
+            </Link>
             <Link
               to="/Service" 
               onClick={handleLinkClick}

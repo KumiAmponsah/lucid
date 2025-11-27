@@ -306,7 +306,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   cursor: pointer;
-  min-width: 0;
+  min-width: 20rem;
+  max-width: 24rem;
 }
 
 .service-card:hover {
