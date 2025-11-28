@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
 import BackgroundImage from '../assets/background.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleFacebookSignin = () => {
+    
+    navigate('/edit');
+  };
+  const handleFacebookSignup = () => {
+    navigate('/clientsignprofile');
+  };
+  const SSignin = () => {
+    navigate('/accountsettings');
   };
 
   return (
@@ -30,31 +42,6 @@ const Signin = () => {
             <div className="flex justify-center px-4 mb-14 mt-6">
               <div className="w-full max-w-md bg-white rounded-lg shadow-2xl p-8">
                 <fieldset className="fieldset w-full p-4">
-                  {/* Name Fields */}
-                  {/*<div className="grid grid-cols-2 gap-4">
-                    <div className="text-left">
-                      <label className="label font-medium text-base text-black">
-                        First Name
-                      </label>
-                      <input
-                        type="text"
-                        className="input w-full px-2 bg-gray-300 text-black text-base"
-                        placeholder="First name"
-                      />
-                    </div>
-
-                    <div className="text-left">
-                      <label className="label font-medium text-base text-black">
-                        Last Name
-                      </label>
-                      <input
-                        type="text"
-                        className="input w-full px-2 bg-gray-300 text-black text-base"
-                        placeholder="Last name"
-                      />
-                    </div>
-                  </div>*/}
-
                   {/* Email */}
                   <label className="label font-medium text-base text-black">
                     Email
@@ -131,29 +118,8 @@ const Signin = () => {
                     </button>
                   </div>
 
-
-                  {/* Password Requirements */}
-                  {/*<div className="text-left text-black mt-2">
-                    <p className="font-medium text-sm mb-1">
-                      Your password must be:
-                    </p>
-                    <ul className="list-disc list-inside space-y-1 text-sm">
-                      <li>At least 8 to 72 characters long</li>
-                      <li>Not contain your name or email</li>
-                      <li>
-                        Not be commonly used or easily guessed
-                        <br />
-                        or contain any variation of your name
-                      </li>
-                    </ul>
-                    <p className="text-xs mt-6">
-                      By clicking 'Create Account', you agree to the Terms of
-                      Use and Privacy Policy
-                    </p>
-                  </div>*/}
-
                   {/* Buttons */}
-                  <button className="btn text-xl text-white bg-blue-700 hover:bg-blue-600 hover:tracking-wide mt-4 font-medium">
+                  <button onClick={SSignin} className="btn text-xl text-white bg-blue-700 hover:bg-blue-600 hover:tracking-wide mt-4 font-medium">
                     Sign in
                   </button>
 
@@ -165,7 +131,7 @@ const Signin = () => {
                   </div>
 
                   {/* Google Login */}
-                  <button className="btn text-base bg-white hover:border-orange-600 border-2 font-medium text-black border-blue-700 w-full flex items-center justify-center gap-2">
+                  <button onClick={handleFacebookSignup} className="btn text-base bg-white hover:border-orange-600 border-2 font-medium text-black border-blue-700 w-full flex items-center justify-center gap-2">
                     <svg
                       aria-label="Google logo"
                       width="17"
@@ -197,7 +163,10 @@ const Signin = () => {
                   </button>
 
                   {/* Facebook Login */}
-                  <button className="btn text-base hover:border-orange-600 bg-white border-2 font-medium text-black border-blue-700 w-full flex items-center justify-center gap-2 mt-3">
+                  <button 
+                    onClick={handleFacebookSignin}
+                    className="btn text-base hover:border-orange-600 bg-white border-2 font-medium text-black border-blue-700 w-full flex items-center justify-center gap-2 mt-3"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="17"

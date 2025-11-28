@@ -8,8 +8,9 @@ import About from './pages/about.jsx';
 import Service from './pages/Services.jsx';
 import Signup from './pages/sign_up.jsx';
 import Signin from './pages/sign_in.jsx';
-import Category from './pages/category.jsx';
-import Selected_service from './pages/selected_service.jsx';
+import Edit from './pages/edit.jsx';
+import Clientsignprofile from './pages/clientsignprofile.jsx';
+import Accountsettings from './pages/accountsettings.jsx';
 
 function App() {
   return (
@@ -18,11 +19,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About/>} />
+        <Route path="/clientsignprofile" element={<Clientsignprofile/>} />
         <Route path="/Service" element={<Service />} />
+        <Route path="/accountsettings" element={<Accountsettings />} />
         <Route path="/signup" element={<Signup/>} />
         <Route path="/signin" element={<Signin/>} />
-        <Route path="/category" element={<Category/>}/>
-        <Route path="/selected_service" element={<Selected_service/>}/>
+        <Route path="/edit" element={<Edit/>} />
       </Routes>
       <Footer/>
     </Router>

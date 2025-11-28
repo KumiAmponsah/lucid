@@ -10,12 +10,30 @@ function Navbar() {
   };
 
   const handleLinkClick = () => {
-  setIsOpen(false);
+    setIsOpen(false);
   };
+
+  // Common dropdown items for both desktop and mobile
+  const dropdownItems = [
+    "Area 1",
+    "Area 2",
+    "Area 3",
+    "Area 4",
+    "Area 5",
+    "Area 6",
+    "Area 7",
+    "Area 8",
+    "Area 9",
+    "Area 10",
+    "Area 11",
+    "Area 12",
+    "Area 13",
+    "Area 14",
+  ];
 
   return (
     <>
-      <div className="navbar bg-white shadow-lg">
+      <div className="navbar bg-white shadow-lg relative">
         {/* Left section */}
         <div className="navbar-start ml-12">
           <Link to="/" className="flex items-center">
@@ -26,7 +44,6 @@ function Navbar() {
             />
           </Link>
         </div>
-
 
         {/* Right section */}
         <div className="navbar-end mr-4">
@@ -54,22 +71,22 @@ function Navbar() {
 
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-white rounded-box z-[1] w-52 p-2 shadow-sm"
+                className="dropdown-content menu bg-white rounded-box z-[1000] w-52 p-2 shadow-sm"
               >
-                <li>
-                  <Link to="/" className="border-b-2 border-transparent hover:border-orange-600 hover:text-orange-600">
-                    Item 1
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/" className="border-b-2 border-transparent hover:border-orange-600 hover:text-orange-600">
-                    Item 2
-                  </Link>
-                </li>
+                {dropdownItems.map((area, index) => (
+                  <li key={index}>
+                    <Link 
+                      to="/" 
+                      className="border-b-2 border-transparent hover:border-orange-600 hover:text-orange-600"
+                    >
+                      {area}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            <Link to="/signup"
+            <Link to="/"
               role="tab"
               className="tab px-4 py-2 text-black border-b-2 border-transparent hover:border-orange-600 transition-colors cursor-pointer"
             >
@@ -153,70 +170,49 @@ function Navbar() {
           {/* Menu Items */}
           <nav className="space-y-4 flex-1">
             {/*Dropdown menu*/}
-              <div className="dropdown dropdown-right w-full">
-                <div tabIndex={0} role="button">
-                  <Link
-                    className="flex items-center space-x-3 text-black hover:text-orange-600 hover:bg-orange-50 p-3 rounded-lg transition-colors"
-                   >
-                     <svg
-                       xmlns="http://www.w3.org/2000/svg"
-                       className="w-5 h-5"
-                       viewBox="0 0 24 24"
-                       fill="currentColor"
-                     >
-                       <path d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z" />
-                     </svg> <span className="font-medium ">Area</span><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 21 21"><path fill="#000" 
-                     d="M10.91 15.242q-.168 0-.289-.11q-.121-.112-.121-.293V9.162q0-.182.124-.293t.288-.111q.042 0 .284.13l2.677 2.678q.093.092.143.199t.05.235t-.05.235t-.143.2l-2.677 
-                     2.677q-.055.055-.129.093q-.073.037-.157.037"/></svg></Link>
+            <div className="dropdown dropdown-right w-full">
+              <div tabIndex={0} role="button" className="w-full">
+                <div className="flex items-center space-x-3 text-black hover:text-orange-600 hover:bg-orange-50 p-3 rounded-lg transition-colors cursor-pointer">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z" />
+                  </svg> 
+                  <span className="font-medium">Area</span>
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="30" 
+                    height="30" 
+                    viewBox="0 0 21 21"
+                  >
+                    <path 
+                      fill="#000" 
+                      d="M10.91 15.242q-.168 0-.289-.11q-.121-.112-.121-.293V9.162q0-.182.124-.293t.288-.111q.042 0 .284.13l2.677 2.678q.093.092.143.199t.05.235t-.05.235t-.143.2l-2.677 2.677q-.055.055-.129.093q-.073.037-.157.037"
+                    />
+                  </svg>
                 </div>
-                 <ul
-          tabIndex="-1"
-          className="dropdown-content menu bg-white rounded-box z-1 w-56 p-2 shadow-sm"
-        >
-          {[
-            "Area 1",
-            "Area 2",
-            "Area 3",
-            "Area 4",
-            "Area 5",
-            "Area 6",
-            "Area 7",
-            "Area 8",
-            "Area 9",
-            "Area 10",
-            "Area 11",
-            "Area 12",
-            "Area 13",
-            "Area 14",
-          ].map((area, index) => (
-            <li key={index}>
-              <Link
-                to="/"
-                onClick={handleLinkClick}
-                className="border-b-2 rounded-none border-transparent hover:border-orange-600 text-black hover:text-orange-600"
-              >
-                {area}
-              </Link>
-            </li>
-          ))}
-        </ul>
               </div>
-            {/*Dropdown menu ends*/}
-            <Link
-              to="/signup" 
-              onClick={handleLinkClick}
-              className="flex items-center space-x-3 text-black hover:text-orange-600 hover:bg-orange-50 p-3 rounded-lg transition-colors"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5"
-                viewBox="0 0 24 24"
-                fill="currentColor"
+              <ul
+                tabIndex={-1}
+                className="dropdown-content menu bg-white rounded-box z-[1001] w-56 p-2 shadow-sm"
               >
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M9 17H7v-7h2zm4 0h-2V7h2zm4 0h-2v-4h2z" />
-              </svg>
-              <span className="font-medium">Join as a worker</span>
-            </Link>
+                {dropdownItems.map((area, index) => (
+                  <li key={index}>
+                    <Link
+                      to="/"
+                      onClick={handleLinkClick}
+                      className="border-b-2 rounded-none border-transparent hover:border-orange-600 text-black hover:text-orange-600"
+                    >
+                      {area}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             <Link
               to="/Service" 
               onClick={handleLinkClick}

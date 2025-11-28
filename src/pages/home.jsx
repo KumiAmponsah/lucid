@@ -1,7 +1,5 @@
 import Section1 from "./home_sections.jsx";
 import BackgroundImage from "../assets/background.png"
-import BackToTop from '../components/back_the_top_btn';
-
 
 function Home() {
   return (
@@ -87,7 +85,6 @@ function Home() {
       {/* Category Buttons end */}
     </div>
     <Section1/>
-    <BackToTop/>
     </>
   );
 }

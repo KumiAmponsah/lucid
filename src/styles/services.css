@@ -306,8 +306,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   cursor: pointer;
-  min-width: 20rem;
-  max-width: 24rem;
+  min-width: 0;
 }
 
 .service-card:hover {
@@ -404,7 +403,6 @@
 
 .app-background {
   width: 100%;
-  /*margin-left: calc(-50vw + 50%);*/
   height: 400px;
   background-image: url('/src/assets/app.jpg');
   background-size: cover;
