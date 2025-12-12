@@ -10,7 +10,15 @@ export default {
         sans: ['Roboto', 'sans-serif'],
         roboto: ['Roboto', 'sans-serif'],
       },
+      height: {
+        '128': '28rem',
+      },
+      width: {
+        '128': '28rem',
+      }
+
     },
   },
+  
   plugins: [require("daisyui")],
 }

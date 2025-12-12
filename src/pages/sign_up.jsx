@@ -165,6 +165,7 @@ const Signup = () => {
                   </div>
 
                   {/* Google Login */}
+                  <Link to="/clientsignprofile">
                   <button className="btn text-base bg-white hover:border-orange-600 border-2 font-medium text-black border-blue-700 w-full flex items-center justify-center gap-2">
                     <svg
                       aria-label="Google logo"
@@ -195,8 +196,10 @@ const Signup = () => {
                     </svg>
                     Sign-up with Google
                   </button>
+                  </Link>
 
                   {/* Facebook Login */}
+                  <Link to="/clientsignprofile">
                   <button className="btn text-base hover:border-orange-600 bg-white border-2 font-medium text-black border-blue-700 w-full flex items-center justify-center gap-2 mt-3">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -215,6 +218,7 @@ const Signup = () => {
                     </svg>
                     Sign-up with Facebook
                   </button>
+                  </Link>
                 </fieldset>
               </div>
             </div>

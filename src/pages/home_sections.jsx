@@ -1,9 +1,21 @@
 import React from 'react';
-import image1 from '../assets/dummy0.jpg';
+import Search from '../assets/search_options.png';
+import Review from '../assets/Ratings.png';
+import Book from '../assets/book.png';
+import InstantQuotes from '../assets/instant qoutes.jpg';
 import Carousel from '../components/carousal_slider.jsx';
 
 
 const Section1 = () => {
+
+const steps = [
+  {id: 1, alt:"pic", num:"1", title: "Search", description: "Search for your desired service or browse through our diverse categories.", imageUrl: Search},
+  {id: 2, alt:"pic", num:"2", title: "Get Instant Quotes", description: "Receive offers from local workers within minutes. Compare prices, reviews, and availability.", imageUrl:InstantQuotes},
+  {id: 3, alt:"pic", num:"3", title: "Choose & Book", description: "Select the best worker for your task based on reviews, ratings, and price. Book instantly through our secure platform.", imageUrl: Book},
+  {id: 4, alt:"pic", num:"4", title: "Feedback & Review", description: "Leave feedback to help future customers and build our trusted community network.", imageUrl: Review},
+
+]
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-300">
       {/* Card Section - Top 3 Cards */}
@@ -266,88 +278,35 @@ const Section1 = () => {
         </p>
       </div>
 
-      <div className="max-w-[1240px] mx-auto grid md:grid-cols-4 gap-x-24 gap-y-8 px-6 mb-6 pb-8">
-        <div className="flex flex-col items-center justify-center text-center">
-            {/*step 1*/}
-         <div className="w-auto h-44 mt-2 bg-blue-700 rounded-2xl overflow-hidden flex items-center justify-center">
-           <img
-             src={"https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"}
-             alt="Task"
-             className="object-cover w-full h-full"
-             />
-          </div>
-           <div className="flex items-center justify-center w-14 h-14 rounded-full bg-orange-500 text-white font-bold text-2xl mt-4">
-             1
-           </div>
-           <h2 className="text-lg font-semibold text-black mt-2">
-             Post Your Task
-           </h2>
-           <p className="text-gray-600 max-w-xs m-1">
-             Describe what you need done and when. Include photos if helpful. Takes less than 2 minutes.
-           </p>
-        </div>
-           {/*step 2*/}
-        <div className="flex flex-col items-center justify-center text-center ">
-         <div className="w-auto h-44 mt-2 bg-blue-700 rounded-2xl overflow-hidden flex items-center justify-center">
-           <img
-             src={"https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"}
-             alt="Task"
-             className="object-cover w-full h-full"
-             />
-          </div>
-           <div className="flex items-center justify-center w-14 h-14 rounded-full bg-orange-500 text-white font-bold text-2xl mt-4">
-             2
-           </div>
-           <h2 className="text-lg font-semibold text-black mt-2">
-             Get Instant Quotes
-           </h2>
-           <p className="text-gray-600 max-w-xs m-1">
-             Receive offers from local workers within minutes. Compare prices, reviews, and availability.
-           </p>
-        </div>
-
-         {/*step 3*/}
-        <div className="flex flex-col items-center justify-center text-center ">
-         <div className="w-auto h-44 mt-2 bg-blue-700 rounded-2xl overflow-hidden flex items-center justify-center">
-           <img
-             src={"https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"}
-             alt="Task"
-             className="object-cover w-full h-full"
-             />
-          </div>
-           <div className="flex items-center justify-center w-14 h-14 rounded-full bg-orange-500 text-white font-bold text-2xl mt-4">
-             3
-           </div>
-           <h2 className="text-lg font-semibold text-black mt-2">
-             Choose & Connect
-           </h2>
-           <p className="text-gray-600 max-w-xs m-1">
-             Select your preferred worker and coordinate directly. Payment is secured until job completion.
-           </p>
-        </div>
-
-         {/*step 4*/}
-        <div className="flex flex-col items-center justify-center text-center ">
-         <div className="w-auto h-44 mt-2 bg-blue-700 rounded-2xl overflow-hidden flex items-center justify-center">
-           <img
-             src={"https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"}
-             alt="Task"
-             className="object-cover w-full h-full"
-             />
-          </div>
-           <div className="flex items-center justify-center w-14 h-14 rounded-full bg-orange-500 text-white font-bold text-2xl mt-4">
-             4
-           </div>
-           <h2 className="text-lg font-semibold text-black mt-2">
-             Rate & Review
-           </h2>
-           <p className="text-gray-600 max-w-xs m-1">
-             Leave feedback to help future customers and build our trusted community network.
-           </p>
-        </div>
-
-
-       </div>
+      <div className="max-w-[1240px] mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-x-24 gap-y-8 px-6 mb-6 pb-8">
+  {steps.map((step) => (
+    <div key={step.id} className="flex flex-col items-center justify-start text-center h-full">
+      {/* Step Image */}
+      <div className="w-full h-44 mt-2 bg-blue-700 rounded-2xl transition-all duration-300 overflow-hidden flex items-center justify-center flex-shrink-0">
+        <img
+          src={step.imageUrl}
+          alt={step.alt}
+          className="object-cover w-full h-full"
+        />
+      </div>
+      
+      {/* Step Number */}
+      <div className="flex items-center justify-center w-14 h-14 rounded-full bg-orange-500 text-white font-bold text-2xl mt-4 flex-shrink-0">
+        {step.num}
+      </div>
+      
+      {/* Step Title */}
+      <h2 className="text-lg font-semibold text-black mt-2 min-h-[28px]">
+        {step.title}
+      </h2>
+      
+      {/* Step Description */}
+      <p className="text-gray-600 max-w-xs m-1 flex-grow">
+        {step.description}
+      </p>
+    </div>
+  ))}
+</div>
       </div>
 
       {/*slider section*/}
