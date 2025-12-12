@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowLeft, SendHorizontal, Phone, Video, MoreVertical, Paperclip, Smile, Camera, Mic, Copy, Edit2, Trash2, X, Image, FileText, Music, Film, Check, Volume2, VolumeX } from 'lucide-react';
+import {
+  ArrowLeft, SendHorizontal, Phone, Video, MoreVertical, Paperclip, Smile, Camera, Mic,
+  Copy, Edit2, Trash2, X, Image, FileText, Music, Film, Check, Volume2, VolumeX
+} from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import BackToBottom from '../components/back_to_bottom_btn.jsx';
+import Profilepic from '../assets/profile.svg';
 
 export default function ChatMessagingPage() {
   const [message, setMessage] = useState('');
@@ -17,65 +21,140 @@ export default function ChatMessagingPage() {
   ]);
   const messagesContainerRef = useRef(null);
   const navigate = useNavigate();
-  const [selectedMessage, setSelectedMessage] = useState(null);
+
+  // UI state
+  const [selectedMessage, setSelectedMessage] = useState(null); // id for message menu
   const [editingMessage, setEditingMessage] = useState(null);
   const [showCopied, setShowCopied] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [confirmEdit, setConfirmEdit] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const [showAttachmentMenu, setShowAttachmentMenu] = useState(false);
   const [showCallModal, setShowCallModal] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [notification, setNotification] = useState('');
   const [isMuted, setIsMuted] = useState(false);
-  const messagesEndRef = useRef(null);
-  const inputRef = useRef(null);
-  const recordingInterval = useRef(null);
   const [confirmClearChat, setConfirmClearChat] = useState(false);
   const [confirmBlockUser, setConfirmBlockUser] = useState(false);
 
+  // refs
+  const messagesEndRef = useRef(null);
+  const textareaRef = useRef(null);
+  const attachmentBtnRef = useRef(null);
+  const attachmentMenuRef = useRef(null);
+  const emojiBtnRef = useRef(null);
+  const emojiMenuRef = useRef(null);
+  const recordingInterval = useRef(null);
+
+  // long-press detection
+  const longPressTimer = useRef(null);
+  const LONG_PRESS_DURATION = 600; // ms
 
   const emojis = ['😊', '😂', '❤️', '👍', '🎉', '😍', '🤔', '😎', '👋', '🔥', '💯', '✨',
-                 '🙏', '💪', '🎊', '😱','😒', '🤷‍♂️', '✌️', '🤣', '😎', '🥲', '🫥', '😮', 
+                 '🙏', '💪', '🎊', '😱','😒', '🤷‍♂️', '✌️', '🤣', '😎', '🥲', '🫥', '😮',
                  '😶‍🌫️', '🤐', '😌', '😓'];
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
+  // autoscroll to bottom when messages change
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
+  // recording timer
   useEffect(() => {
     if (isRecording) {
       recordingInterval.current = setInterval(() => {
         setRecordingTime(prev => prev + 1);
       }, 1000);
     } else {
-      if (recordingInterval.current) {
-        clearInterval(recordingInterval.current);
-      }
+      if (recordingInterval.current) clearInterval(recordingInterval.current);
       setRecordingTime(0);
     }
     return () => {
-      if (recordingInterval.current) {
-        clearInterval(recordingInterval.current);
-      }
+      if (recordingInterval.current) clearInterval(recordingInterval.current);
     };
   }, [isRecording]);
+
+  // close menus when clicking/touching outside
+  useEffect(() => {
+    function handleOutside(e) {
+      // attachment menu
+      if (showAttachmentMenu) {
+        if (
+          attachmentMenuRef.current &&
+          !attachmentMenuRef.current.contains(e.target) &&
+          attachmentBtnRef.current &&
+          !attachmentBtnRef.current.contains(e.target)
+        ) {
+          setShowAttachmentMenu(false);
+        }
+      }
+      // emoji picker
+      if (showEmojiPicker) {
+        if (
+          emojiMenuRef.current &&
+          !emojiMenuRef.current.contains(e.target) &&
+          emojiBtnRef.current &&
+          !emojiBtnRef.current.contains(e.target)
+        ) {
+          setShowEmojiPicker(false);
+        }
+      }
+      // more menu in header
+      if (showMoreMenu) {
+        const moreMenu = document.querySelector('.header-more-menu');
+        const moreBtn = document.querySelector('.header-more-btn');
+        if (moreMenu && moreBtn && !moreMenu.contains(e.target) && !moreBtn.contains(e.target)) {
+          setShowMoreMenu(false);
+        }
+      }
+      // message actions menu
+      if (selectedMessage) {
+        const openMenu = document.querySelector('.message-actions-menu');
+        if (openMenu && !openMenu.contains(e.target)) {
+          setSelectedMessage(null);
+        }
+      }
+    }
+
+    document.addEventListener('click', handleOutside);
+    document.addEventListener('touchstart', handleOutside);
+    return () => {
+      document.removeEventListener('click', handleOutside);
+      document.removeEventListener('touchstart', handleOutside);
+    };
+  }, [showAttachmentMenu, showEmojiPicker, showMoreMenu, selectedMessage]);
+
+  // close attachment menu on Escape
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key === 'Escape') {
+        setShowAttachmentMenu(false);
+        setShowEmojiPicker(false);
+        setShowMoreMenu(false);
+        setSelectedMessage(null);
+      }
+    }
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const showNotification = (text) => {
     setNotification(text);
     setTimeout(() => setNotification(''), 2000);
   };
 
+  // send message
   const handleSendMessage = () => {
     if (message.trim()) {
       if (editingMessage) {
-        setMessages(messages.map(msg => 
-          msg.id === editingMessage.id 
+        setMessages(messages.map(msg =>
+          msg.id === editingMessage.id
             ? { ...msg, text: message, edited: true }
             : msg
         ));
@@ -92,10 +171,15 @@ export default function ChatMessagingPage() {
       }
       setMessage('');
       setSelectedMessage(null);
+      // reset textarea height
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+      }
     }
   };
 
-  const handleKeyPress = (e) => {
+  // keyboard handling in textarea: Enter sends (unless shift)
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
@@ -108,22 +192,21 @@ export default function ChatMessagingPage() {
   };
 
   const confirmClearChatAction = () => {
-  setMessages([]);
-  showNotification("Chat cleared!");
-  setConfirmClearChat(false);
-};
+    setMessages([]);
+    showNotification("Chat cleared!");
+    setConfirmClearChat(false);
+  };
 
-const confirmBlockUserAction = () => {
-  showNotification("User has been blocked");
-  setConfirmBlockUser(false);
-};
-
+  const confirmBlockUserAction = () => {
+    showNotification("User has been blocked");
+    setConfirmBlockUser(false);
+  };
 
   const confirmEditAction = () => {
     setEditingMessage(confirmEdit);
     setMessage(confirmEdit.text);
     setConfirmEdit(null);
-    inputRef.current?.focus();
+    setTimeout(() => textareaRef.current?.focus(), 50);
   };
 
   const handleCopyMessage = (msg) => {
@@ -146,11 +229,14 @@ const confirmBlockUserAction = () => {
   const cancelEdit = () => {
     setEditingMessage(null);
     setMessage('');
+    if (textareaRef.current) textareaRef.current.style.height = 'auto';
   };
 
   const handleEmojiClick = (emoji) => {
-    setMessage(message + emoji);
+    // append emoji; focusing afterwards
+    setMessage(prev => prev + emoji);
     setShowEmojiPicker(false);
+    setTimeout(() => textareaRef.current?.focus(), 50);
   };
 
   const handleAttachment = (type) => {
@@ -160,7 +246,7 @@ const confirmBlockUserAction = () => {
       audio: '🎵 Audio',
       video: '🎬 Video'
     };
-    
+
     const newMessage = {
       id: messages.length + 1,
       text: `[${attachmentTypes[type]} attached]`,
@@ -170,6 +256,7 @@ const confirmBlockUserAction = () => {
     };
     setMessages([...messages, newMessage]);
     showNotification(`${attachmentTypes[type]} sent successfully!`);
+    setShowAttachmentMenu(false);
   };
 
   const handleCall = (type) => {
@@ -205,51 +292,97 @@ const confirmBlockUserAction = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // textarea autosize on input
+  const handleTextareaInput = (e) => {
+    setMessage(e.target.value);
+    const ta = textareaRef.current;
+    if (ta) {
+      ta.style.height = 'auto';
+      const maxHeight = 160; // px, ~5-6 lines
+      ta.style.height = Math.min(ta.scrollHeight, maxHeight) + 'px';
+    }
+  };
+
+  // message bubble long-press + right-click handlers
+  const openMessageMenu = (id) => {
+    setSelectedMessage(id);
+  };
+
+  const startLongPress = (msgId) => {
+    clearTimeout(longPressTimer.current);
+    longPressTimer.current = setTimeout(() => {
+      openMessageMenu(msgId);
+    }, LONG_PRESS_DURATION);
+  };
+
+  const cancelLongPress = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
+
   return (
-    <div className="flex flex-col h-screen overflow-y-hidden bg-gray-50">
+    <div className="flex flex-col h-screen overflow-hidden bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm px-4 py-4 flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <button 
-             onClick={() => {
+          <button
+            onClick={() => {
               showNotification('Navigating back...');
               if (window.history.length > 2) {
                 navigate(-1);
               } else {
-                navigate('/lucid_website_test'); // fallback home page
+                navigate('/lucid_website_test');
               }
             }}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-            >
-              <ArrowLeft className="w-6 h-6 text-gray-700" />
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <ArrowLeft className="w-6 h-6 text-gray-700" />
           </button>
-          <div>
-            <h1 className="text-xl font-semibold text-gray-900">Gabriel A. Gordon-Mensah</h1>
-            <p className="text-sm text-gray-500">Online - Last seen, 2:02pm</p>
+
+          <div className="flex items-center space-x-3 min-w-0">
+            <img
+              src={Profilepic}
+              alt="Profile"
+              className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+            />
+            <div className="min-w-0">
+              <h1 className="text-lg font-semibold text-gray-900 truncate max-w-[140px] sm:max-w-[180px]">
+                Gabriel A. Gordon-Mensah
+              </h1>
+              <p className="text-sm text-gray-500 truncate max-w-[120px] sm:max-w-[170px]">
+                Online - Last seen, 2:02pm
+              </p>
+            </div>
           </div>
         </div>
+
         <div className="flex items-center space-x-2">
-          <button 
+          <button
             onClick={() => handleCall('voice')}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <Phone className="w-6 h-6 text-orange-500" />
           </button>
-          <button 
+
+          <button
             onClick={() => handleCall('video')}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <Video className="w-6 h-6 text-orange-500" />
           </button>
+
           <div className="relative">
-            <button 
-              onClick={() => setShowMoreMenu(!showMoreMenu)}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            <button
+              onClick={() => setShowMoreMenu(prev => !prev)}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors header-more-btn"
             >
               <MoreVertical className="w-6 h-6 text-orange-500" />
             </button>
+
             {showMoreMenu && (
-              <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-10 min-w-48">
+              <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-10 min-w-48 header-more-menu">
                 <button
                   onClick={() => {
                     setIsMuted(!isMuted);
@@ -262,27 +395,26 @@ const confirmBlockUserAction = () => {
                   <span>{isMuted ? 'Unmute' : 'Mute'} Notifications</span>
                 </button>
                 <button
-  onClick={() => {
-    setConfirmClearChat(true);
-    setShowMoreMenu(false);
-  }}
-  className="w-full px-4 py-3 text-left hover:bg-gray-100 text-blue-600 flex items-center space-x-3"
->
-  <Trash2 className="w-5 h-5" />
-  <span>Clear Chat</span>
-</button>
+                  onClick={() => {
+                    setConfirmClearChat(true);
+                    setShowMoreMenu(false);
+                  }}
+                  className="w-full px-4 py-3 text-left hover:bg-gray-100 text-blue-600 flex items-center space-x-3"
+                >
+                  <Trash2 className="w-5 h-5" />
+                  <span>Clear Chat</span>
+                </button>
 
-<button
-  onClick={() => {
-    setConfirmBlockUser(true);
-    setShowMoreMenu(false);
-  }}
-  className="w-full px-4 py-3 text-left hover:bg-red-50 text-red-600 flex items-center space-x-3"
->
-  <X className="w-5 h-5" />
-  <span>Block User</span>
-</button>
-
+                <button
+                  onClick={() => {
+                    setConfirmBlockUser(true);
+                    setShowMoreMenu(false);
+                  }}
+                  className="w-full px-4 py-3 text-left hover:bg-red-50 text-red-600 flex items-center space-x-3"
+                >
+                  <X className="w-5 h-5" />
+                  <span>Block User</span>
+                </button>
               </div>
             )}
           </div>
@@ -291,14 +423,14 @@ const confirmBlockUserAction = () => {
 
       {/* Notification Toast */}
       {notification && (
-        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-up">
+        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
           {notification}
         </div>
       )}
 
       {/* Copied Notification */}
       {showCopied && (
-        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-up">
+        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
           Message copied!
         </div>
       )}
@@ -392,76 +524,75 @@ const confirmBlockUserAction = () => {
         </div>
       )}
 
-{/* Clear chat Confirmation Modal */}
+      {/* Clear chat Confirmation Modal */}
       {confirmClearChat && (
-  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div className="bg-white rounded-lg shadow-xl p-6 max-w-md mx-4">
-      <div className="flex items-center space-x-3 mb-4">
-        <div className="bg-blue-100 p-3 rounded-full">
-          <Trash2 className="w-6 h-6 text-blue-600" />
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 max-w-md mx-4">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <Trash2 className="w-6 h-6 text-blue-600" />
+              </div>
+              <h2 className="text-xl font-semibold text-gray-900">Clear Chat?</h2>
+            </div>
+
+            <p className="text-gray-600 mb-2">
+              This will delete ALL messages in this conversation.
+            </p>
+
+            <div className="flex space-x-3 mt-6">
+              <button
+                onClick={() => setConfirmClearChat(false)}
+                className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmClearChatAction}
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
         </div>
-        <h2 className="text-xl font-semibold text-gray-900">Clear Chat?</h2>
-      </div>
+      )}
 
-      <p className="text-gray-600 mb-2">
-        This will delete ALL messages in this conversation.
-      </p>
+      {/* Block user Confirmation Modal */}
+      {confirmBlockUser && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 max-w-md mx-4">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="bg-red-100 p-3 rounded-full">
+                <X className="w-6 h-6 text-red-600" />
+              </div>
+              <h2 className="text-xl font-semibold text-gray-900">Block User?</h2>
+            </div>
 
-      <div className="flex space-x-3 mt-6">
-        <button
-          onClick={() => setConfirmClearChat(false)}
-          className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={confirmClearChatAction}
-          className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-        >
-          Clear
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+            <p className="text-gray-600 mb-2">
+              You will no longer receive messages, calls, or notifications from this user.
+            </p>
 
-{/* Block user Confirmation Modal */}
-{confirmBlockUser && (
-  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div className="bg-white rounded-lg shadow-xl p-6 max-w-md mx-4">
-      <div className="flex items-center space-x-3 mb-4">
-        <div className="bg-red-100 p-3 rounded-full">
-          <X className="w-6 h-6 text-red-600" />
+            <div className="flex space-x-3 mt-6">
+              <button
+                onClick={() => setConfirmBlockUser(false)}
+                className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmBlockUserAction}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+              >
+                Block
+              </button>
+            </div>
+          </div>
         </div>
-        <h2 className="text-xl font-semibold text-gray-900">Block User?</h2>
-      </div>
-
-      <p className="text-gray-600 mb-2">
-        You will no longer receive messages, calls, or notifications from this user.
-      </p>
-
-      <div className="flex space-x-3 mt-6">
-        <button
-          onClick={() => setConfirmBlockUser(false)}
-          className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={confirmBlockUserAction}
-          className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
-        >
-          Block
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
+      )}
 
       {/* Emoji Picker */}
       {showEmojiPicker && (
-        <div className="absolute bottom-24 right-20 bg-white rounded-lg shadow-xl border border-gray-200 p-4 z-10">
+        <div ref={emojiMenuRef} className="absolute bottom-24 right-20 bg-white rounded-lg shadow-xl border border-gray-200 p-4 z-10">
           <div className="grid grid-cols-5 gap-2">
             {emojis.map((emoji, idx) => (
               <button
@@ -478,40 +609,45 @@ const confirmBlockUserAction = () => {
 
       {/* Messages Area */}
       <div ref={messagesContainerRef} className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-        <BackToBottom 
-  messagesContainerRef={messagesContainerRef} 
-  messagesEndRef={messagesEndRef} 
-/>
+        <BackToBottom
+          messagesContainerRef={messagesContainerRef}
+          messagesEndRef={messagesEndRef}
+        />
         {messages.map((msg, index) => {
-          const showTime = index === 0 || 
+          const showTime = index === 0 ||
             messages[index - 1].sender !== msg.sender ||
             messages[index - 1].time !== msg.time;
-          
+
           return (
             <div key={msg.id}>
               <div className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className="flex items-end space-x-2 max-w-md relative">
+                <div className="flex items-end space-x-2 relative">
                   {msg.sender === 'other' && (
                     <div className="w-2 h-2 rounded-full bg-gray-400 mb-3 flex-shrink-0"></div>
                   )}
+
                   <div className="relative">
                     <div
-                      onClick={() => msg.sender === 'user' && setSelectedMessage(selectedMessage === msg.id ? null : msg.id)}
-                      className={`px-6 py-3 rounded-3xl cursor-pointer transition-all ${
+                      // right-click + long-press triggers menu
+                      onContextMenu={(e) => { e.preventDefault(); if (msg.sender === 'user') openMessageMenu(msg.id); }}
+                      onMouseDown={() => startLongPress(msg.id)}
+                      onMouseUp={cancelLongPress}
+                      onMouseLeave={cancelLongPress}
+                      onTouchStart={() => startLongPress(msg.id)}
+                      onTouchEnd={cancelLongPress}
+                      className={`px-4 py-3 rounded-3xl cursor-pointer transition-all max-w-[75vw] break-words whitespace-pre-wrap overflow-hidden ${
                         msg.sender === 'user'
                           ? 'bg-orange-500 text-white rounded-br-sm hover:bg-orange-600'
                           : 'bg-gray-200 text-gray-900 rounded-bl-sm'
                       } ${selectedMessage === msg.id ? 'ring-2 ring-blue-500' : ''}`}
                     >
                       <p className="text-base">{msg.text}</p>
-                      {msg.edited && (
-                        <p className="text-xs opacity-70 mt-1">Edited</p>
-                      )}
+                      {msg.edited && <p className="text-xs opacity-70 mt-1">Edited</p>}
                     </div>
-                    
+
                     {/* Message Actions Menu */}
                     {selectedMessage === msg.id && msg.sender === 'user' && (
-                      <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-10 min-w-32">
+                      <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-10 min-w-32 message-actions-menu">
                         <button
                           onClick={() => handleEditMessage(msg)}
                           className="w-full px-4 py-2 text-left hover:bg-gray-100 text-blue-600 flex items-center space-x-2 text-sm"
@@ -536,11 +672,11 @@ const confirmBlockUserAction = () => {
                       </div>
                     )}
                   </div>
-                  {msg.sender === 'user' && (
-                    <div className="w-2 h-2 rounded-full bg-orange-500 mb-3 flex-shrink-0"></div>
-                  )}
+
+                  {msg.sender === 'user' && <div className="w-2 h-2 rounded-full bg-orange-500 mb-3 flex-shrink-0"></div>}
                 </div>
               </div>
+
               {showTime && (
                 <div className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} mt-1`}>
                   <p className={`text-xs text-gray-400 ${msg.sender === 'other' ? 'ml-6' : 'mr-6'}`}>
@@ -589,96 +725,124 @@ const confirmBlockUserAction = () => {
       )}
 
       {/* Message Input */}
+      {/* Outer wrapper is relative so the floating attachment menu can be positioned above the bar */}
       <div className="bg-white px-4 py-4 border-t border-gray-200">
-        <div className="flex items-center space-x-3">
-          <div className="flex-1 flex items-center bg-blue-700 rounded-full px-4 py-3">
-            <div className="relative">
-              <button 
-                onClick={() => {
-                  const menu = document.getElementById('attachment-menu');
-                  menu.classList.toggle('hidden');
-                }}
-                className="p-1 hover:bg-blue-600 rounded-full transition-colors mr-2"
-              >
-                <Paperclip className="w-5 h-5 text-white" />
-              </button>
-              <div id="attachment-menu" className="hidden absolute bottom-12 left-0 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-10 min-w-40">
+        <div className="relative w-full">
+          <div className="flex items-center space-x-3 w-full overflow-hidden">
+            <div className="flex-1 flex items-center bg-blue-700 rounded-full px-3 py-2 min-w-0">
+              {/* Paperclip and menu are visually inside this area, but the menu DOM is rendered after the blue bar
+                  and positioned absolutely relative to the outer wrapper (so it floats above) */}
+              <div className="flex items-center">
                 <button
-                  onClick={() => {
-                    handleAttachment('image');
-                    document.getElementById('attachment-menu').classList.add('hidden');
-                  }}
-                  className="w-full px-4 py-2 text-left hover:bg-gray-100 text-blue-600 flex items-center space-x-2 text-sm"
+                  ref={attachmentBtnRef}
+                  onClick={() => setShowAttachmentMenu(prev => !prev)}
+                  aria-expanded={showAttachmentMenu}
+                  aria-haspopup="menu"
+                  className="p-1 hover:bg-blue-600 rounded-full transition-colors mr-2"
                 >
-                  <Image className="w-4 h-4 text-blue-600" />
-                  <span>Photo</span>
-                </button>
-                <button
-                  onClick={() => {
-                    handleAttachment('document');
-                    document.getElementById('attachment-menu').classList.add('hidden');
-                  }}
-                  className="w-full px-4 py-2 text-left hover:bg-gray-100 text-blue-600 flex items-center space-x-2 text-sm"
-                >
-                  <FileText className="w-4 h-4 text-green-600" />
-                  <span>Document</span>
-                </button>
-                <button
-                  onClick={() => {
-                    handleAttachment('audio');
-                    document.getElementById('attachment-menu').classList.add('hidden');
-                  }}
-                  className="w-full px-4 py-2 text-left hover:bg-gray-100 text-blue-600 flex items-center space-x-2 text-sm"
-                >
-                  <Music className="w-4 h-4 text-purple-600" />
-                  <span>Audio</span>
-                </button>
-                <button
-                  onClick={() => {
-                    handleAttachment('video');
-                    document.getElementById('attachment-menu').classList.add('hidden');
-                  }}
-                  className="w-full px-4 py-2 text-left hover:bg-gray-100 text-blue-600 flex items-center space-x-2 text-sm"
-                >
-                  <Film className="w-4 h-4 text-red-600" />
-                  <span>Video</span>
+                  <Paperclip className="w-5 h-5 text-white" />
                 </button>
               </div>
-            </div>
-            <input
-              ref={inputRef}
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Type your message here..."
-              className="flex-1 bg-transparent text-white placeholder-blue-200 outline-none"
-            />
-            <button 
-              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              className="p-1 hover:bg-blue-600 rounded-full transition-colors ml-2"
-            >
-              <Smile className="w-5 h-5 text-white" />
-            </button>
-            {!message.trim() && (
-              <button 
-                onClick={() => handleAttachment('image')}
+
+              <textarea
+                ref={textareaRef}
+                value={message}
+                onChange={handleTextareaInput}
+                onKeyDown={handleKeyDown}
+                placeholder="Type your message here..."
+                rows={1}
+                className="flex-1 bg-transparent text-white placeholder-blue-200 outline-none min-w-0 resize-none overflow-hidden"
+              />
+
+              <button
+                ref={emojiBtnRef}
+                onClick={() => setShowEmojiPicker(prev => !prev)}
                 className="p-1 hover:bg-blue-600 rounded-full transition-colors ml-2"
               >
-                <Camera className="w-5 h-5 text-white" />
+                <Smile className="w-5 h-5 text-white" />
               </button>
-            )}
+
+              {!message.trim() && (
+                <button
+                  onClick={() => handleAttachment('image')}
+                  className="p-1 hover:bg-blue-600 rounded-full transition-colors ml-2"
+                >
+                  <Camera className="w-5 h-5 text-white" />
+                </button>
+              )}
+            </div>
+
+            <button
+              onClick={message.trim() ? handleSendMessage : startRecording}
+              className="bg-blue-700 p-4 rounded-full hover:bg-blue-800 transition-colors"
+            >
+              {message.trim() ? (
+                <SendHorizontal className="w-6 h-6 text-white" />
+              ) : (
+                <Mic className="w-6 h-6 text-white" />
+              )}
+            </button>
           </div>
-          <button 
-            onClick={message.trim() ? handleSendMessage : startRecording}
-            className="bg-blue-700 p-4 rounded-full hover:bg-blue-800 transition-colors"
+
+          {/* Backdrop to close the menu when tapping outside (keeps consistent behavior) */}
+          {showAttachmentMenu && (
+            <div
+              className="fixed inset-0 z-40"
+              onClick={() => setShowAttachmentMenu(false)}
+            />
+          )}
+
+          {/* Floating bubble above the button (telegram-style). Positioned relative to the outer wrapper */}
+          <div
+            ref={attachmentMenuRef}
+            role="menu"
+            aria-label="Attachments"
+            className={`absolute bottom-full left-3 mb-2 w-48 flex flex-col items-stretch space-y-2 z-50 transform transition-all duration-150 ${
+              showAttachmentMenu ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-2 pointer-events-none'
+            }`}
           >
-            {message.trim() ? (
-              <SendHorizontal className="w-6 h-6 text-white" />
-            ) : (
-              <Mic className="w-6 h-6 text-white" />
-            )}
-          </button>
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-2">
+              <button
+                onClick={() => { handleAttachment('image'); setShowAttachmentMenu(false); }}
+                className="w-full px-3 py-2 text-left hover:bg-gray-50 rounded-md flex items-center space-x-3"
+              >
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                  <Image className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-sm text-gray-700">Photo</span>
+              </button>
+
+              <button
+                onClick={() => { handleAttachment('document'); setShowAttachmentMenu(false); }}
+                className="w-full px-3 py-2 text-left hover:bg-gray-50 rounded-md flex items-center space-x-3 mt-1"
+              >
+                <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center">
+                  <FileText className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-sm text-gray-700">Document</span>
+              </button>
+
+              <button
+                onClick={() => { handleAttachment('audio'); setShowAttachmentMenu(false); }}
+                className="w-full px-3 py-2 text-left hover:bg-gray-50 rounded-md flex items-center space-x-3 mt-1"
+              >
+                <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+                  <Music className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-sm text-gray-700">Audio</span>
+              </button>
+
+              <button
+                onClick={() => { handleAttachment('video'); setShowAttachmentMenu(false); }}
+                className="w-full px-3 py-2 text-left hover:bg-gray-50 rounded-md flex items-center space-x-3 mt-1"
+              >
+                <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center">
+                  <Film className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-sm text-gray-700">Video</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

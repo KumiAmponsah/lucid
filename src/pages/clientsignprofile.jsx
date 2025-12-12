@@ -157,7 +157,7 @@ const navigate = useNavigate();
         {/* Action Panel */}
         <div className="flex flex-col gap-4 animate-[fadeInUp_0.6s_ease-out] [animation-delay:0.2s]">
           <Link to="/accountsettings">
-          <button className="bg-white w-[28rem] md:w-[27rem] border-2 border-slate-200 rounded-2xl p-5 cursor-pointer transition-all duration-300 flex items-center justify-between text-left hover:border-indigo-500 hover:-translate-y-0.5 hover:shadow-xl">
+          <button className="bg-white w-full max-w-lg border-2 border-slate-200 rounded-2xl p-5 cursor-pointer transition-all duration-300 flex items-center justify-between text-left hover:border-indigo-500 hover:-translate-y-0.5 hover:shadow-xl">
             <div className="flex items-center gap-3">
               <Settings className="w-5 h-5 text-blue-800" />
               <span className="text-gray-800 font-semibold text-base">Account Settings</span>
@@ -167,7 +167,7 @@ const navigate = useNavigate();
           </Link>
 
           <Link to="/notificationsettings">
-          <button className="bg-white w-[28rem] md:w-[27rem] border-2 border-slate-200 rounded-2xl p-5 cursor-pointer transition-all duration-300 flex items-center justify-between text-left hover:border-indigo-500 hover:-translate-y-0.5 hover:shadow-xl">
+          <button className="bg-white w-full max-w-lg border-2 border-slate-200 rounded-2xl p-5 cursor-pointer transition-all duration-300 flex items-center justify-between text-left hover:border-indigo-500 hover:-translate-y-0.5 hover:shadow-xl">
             <div className="flex items-center gap-3">
               <Bell className="w-5 h-5 text-blue-800" />
               <span className="text-gray-800 font-semibold text-base">Notification Settings</span>
@@ -178,7 +178,7 @@ const navigate = useNavigate();
 
           <div className="mt-6">
             <Link to="/signin">
-            <button className="bg-gradient-to-r md:w-[27rem] from-red-600 to-red-700 text-white border-none px-6 py-4 rounded-2xl font-semibold cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 w-full shadow-md hover:-translate-y-0.5 hover:shadow-xl">
+            <button className="bg-gradient-to-r w-full max-w-lg from-red-600 to-red-700 text-white border-none px-6 py-4 rounded-2xl font-semibold cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:-translate-y-0.5 hover:shadow-xl">
               <LogOut size={20} color="white"/>
               Log out
             </button>
