@@ -216,7 +216,7 @@ const confirmBlockUserAction = () => {
               if (window.history.length > 2) {
                 navigate(-1);
               } else {
-                navigate('/'); // fallback home page
+                navigate('/lucid_website_test'); // fallback home page
               }
             }}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"

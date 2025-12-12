@@ -41,7 +41,7 @@ function App() {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/lucid_dev_backup" element={<Home />} />
+          <Route path="/lucid_website_test" element={<Home />} />
           <Route path="/about" element={<About/>} />
           <Route path="/Service" element={<Service />} />
           <Route path="/signup" element={<Signup/>} />
