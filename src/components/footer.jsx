@@ -15,7 +15,7 @@ export default function Footer () {
         <>
         <footer className="footer bg-black text-white border-gray-200 border-b px-10 py-4">
             <div className="flex items-center justify-between w-full">
-                <Link to="/" className="flex items-center">
+                <Link to="/lucid_dev_backup" className="flex items-center">
                         <img
                           src={Logo2}
                           alt="Lucid Logo"
@@ -24,19 +24,19 @@ export default function Footer () {
                 </Link>
                 <nav>
                     <div className="grid grid-flow-col gap-4">
-                      <Link to="/" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">
+                      <Link to="/lucid_dev_backup" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">
                         <FaXTwitter size={24} className="fill-current hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors"/>
                       </Link>
-                      <Link to="/" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">
+                      <Link to="/lucid_dev_backup" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">
                         <FaYoutube size={24} className="fill-current hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors"/>
                       </Link>
-                      <Link to="/">
+                      <Link to="/lucid_dev_backup">
                         <FaFacebook size={24} className="fill-current hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors"/>
                       </Link>
-                      <Link to="/">
+                      <Link to="/lucid_dev_backup">
                         <FaInstagram size={24} className="fill-current hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors"/>
                       </Link>
-                      <Link to="/">
+                      <Link to="/lucid_dev_backup">
                         <FaThreads size={24} className="fill-current hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors"/>
                       </Link>
                     </div>
@@ -60,27 +60,27 @@ export default function Footer () {
           </nav>
           <nav className="mx-4 p-2">
             <h6 className="mb-1 uppercase font-semibold text-white">Quick Links</h6>
-            <Link to="/" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Pricing</Link>
-            <Link to="/" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">How it works</Link>
+            <Link to="/lucid_dev_backup" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Pricing</Link>
+            <Link to="/lucid_dev_backup" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">How it works</Link>
             <Link to="/Service" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Services</Link>
-            <Link to="/" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Safety</Link>
+            <Link to="/lucid_dev_backup" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Safety</Link>
           </nav>
           <nav className="mx-4 p-2">
             <h6 className="mb-1 uppercase font-semibold text-white">Company</h6>
-            <Link to="/" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">About us</Link>
-            <Link to="/" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Contact</Link>
-            <Link to="/" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Jobs</Link>
+            <Link to="/lucid_dev_backup" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">About us</Link>
+            <Link to="/lucid_dev_backup" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Contact</Link>
+            <Link to="/lucid_dev_backup" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Jobs</Link>
             <Link to="/userProfile" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">User Account profile</Link>
             <Link to="/clientsignprofile" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">client Account profile</Link>
           </nav>
           <nav className="mx-4 p-2">
             <h6 className="mb-1 uppercase font-semibold text-white">Legal</h6>
-            <Link to="/" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Terms of use</Link>
-            <Link to="/" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Privacy policy</Link>
-            <Link to="/" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Cookie policy</Link>
+            <Link to="/lucid_dev_backup" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Terms of use</Link>
+            <Link to="/lucid_dev_backup" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Privacy policy</Link>
+            <Link to="/lucid_dev_backup" className="hover:text-orange-600 hover: opacity-80 cursor-pointer transition-colors">Cookie policy</Link>
             <div className="mt-12">
               <button className="btn border-2 border-white lg:w-28 m-t-4 mb-4 mr-4 hover:cursor-pointer hover:shadow-2xl hover:shadow-orange-600">
-                      <Link to="/">
+                      <Link to="/lucid_dev_backup">
                         <img
                           src={downloadBtn_1}
                           alt="app store download button"
@@ -88,7 +88,7 @@ export default function Footer () {
                         />
                       </Link></button>
               <button className="btn border-2 border-white lg:w-28 m-t-4 mb-4 mr-4 hover:cursor-pointer hover:shadow-2xl hover:shadow-orange-600">
-                     <Link to="/">
+                     <Link to="/lucid_dev_backup">
                         <img
                           src={downloadBtn_2}
                           alt="playstore download button"

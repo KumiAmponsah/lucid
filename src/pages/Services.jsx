@@ -197,7 +197,7 @@ const Services = () => {
                 {/* Icon */}
                 <div className="">
                   <button className="btn border-2 bg-black border-white lg:w-28 m-t-4 mb-4 mr-4 hover:cursor-pointer hover:shadow-2xl hover:shadow-orange-600">
-                    <Link to="/">
+                    <Link to="/lucid_dev_backup">
                       <img
                         src={downloadBtn_1}
                         alt="app store download button"
@@ -206,7 +206,7 @@ const Services = () => {
                     </Link>
                   </button>
                   <button className="btn border-2 bg-black border-white lg:w-28 m-t-4 mb-4 mr-4 hover:cursor-pointer hover:shadow-2xl hover:shadow-orange-600">
-                    <Link to="/">
+                    <Link to="/lucid_dev_backup">
                       <img
                         src={downloadBtn_2}
                         alt="playstore download button"
