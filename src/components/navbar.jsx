@@ -43,7 +43,7 @@ function Navbar() {
       <div className="navbar bg-white h-20 shadow-lg">
         {/* Left section */}
         <div className="navbar-start ml-12">
-          <Link to="/" className="flex items-center">
+          <Link to="/lucid_dev_backup" className="flex items-center">
             <img
               src={Logo}
               alt="Lucid Logo"
